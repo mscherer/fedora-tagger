@@ -231,6 +231,14 @@ class Flasktests(Modeltests):
         self.assertEqual(output['tags'][1]['like'], 2)
         self.assertEqual(output['tags'][1]['dislike'], 0)
 
+        #This tests that invalid tags are rejected.
+        data = {'pkgname': 'guake', 'tag': 'ass'}
+
+        output = self.app.put('/api/v1/tag/guake/', data=data)
+        self.assertEqual(output.status_code, 406)
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'notok')
+
     def test_pkg_get_rating(self):
         """ Test the pkg_get_rating function.  """
 
@@ -733,6 +741,22 @@ class Flasktests(Modeltests):
         #self.assertEqual(output['name'], '1.2.3')
         #self.assertTrue(output['token'].startswith('dGFnZ2VyYXBp#'))
 
+    def test_toggle(self):
+        """Test that toggle function reverses input"""
+        response = self.app.get('/notifs_state/')
+        self.assertEqual(response.status_code, 200)
+        old_data = json.loads(response.data)
+        old_state = old_data['notifications_on']
+        new_response = self.app.get('/notifs_toggle/')
+        self.assertEqual(new_response.status_code, 200)
+        data = json.loads(new_response.data)
+        new_state = data['notifications_on'] 
+        if old_state == False:
+            self.assertEqual(new_state, True)
+        elif old_state == True:
+            self.assertEqual(new_state, False)
+        else:
+            self.assertEqual(1, 2)
 
 if __name__ == '__main__':
     SUITE = unittest.TestLoader().loadTestsFromTestCase(Flasktests)
