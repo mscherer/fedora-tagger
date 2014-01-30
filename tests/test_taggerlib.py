@@ -81,10 +81,10 @@ class TaggerLibtests(Modeltests):
 
         rating = model.Rating.rating_of_package(self.session, pkg.id)
         self.assertEqual(75, rating)
-        
+
         r = fedoratagger.lib.model.Package.rating(pkg, self.session)
         self.assertEquals(75, r)
-        
+
     def test_add_tag(self):
         """ Test the add_tag function of taggerlib. """
         create_user(self.session)
@@ -130,12 +130,12 @@ class TaggerLibtests(Modeltests):
         self.assertEqual('terminal', pkg.tags[1].label)
         self.assertEqual(1, pkg.tags[0].like)
         self.assertEqual(2, pkg.tags[1].like)
-                
+
         self.assertRaises(ValueError,
                           fedoratagger.lib.add_tag,
                           self.session, 'guake', 'ass',
                           user_pingou)
-        
+
         tagobj1 = model.Tag.get(self.session, pkg.id, 'terminal')
         self.assertEquals('terminal on guake', tagobj1.__unicode__())
         tagobj2 = model.Tag.get(self.session, pkg.id, u'gnóme')
@@ -332,6 +332,42 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(3, out['summary']['total_packages'])
         self.assertEqual(3, out['summary']['total_unique_tags'])
 
+    def test_statistics_by_user(self):
+        """ Test the statistics per user method. """
+        self.test_add_vote()
+        user_yograterol = model.FASUser.by_name(self.session, 'yograterol')
+
+        # Check nothing vote
+        out = fedoratagger.lib.statistics_by_user(self.session,
+                                                  user_yograterol)
+
+        self.assertEqual(out["total_like"], 0)
+        self.assertEqual(out["total_dislike"], 0)
+
+        # Do a vote and generate the statistics
+        fedoratagger.lib.add_vote(self.session, 'guake',
+                                  'terminal', False, user_yograterol)
+
+        out = fedoratagger.lib.statistics_by_user(self.session,
+                                                  user_yograterol)
+        self.assertEqual(out["total_like"], 0)
+        self.assertEqual(out["total_dislike"], 1)
+
+        self.assertEqual(out["dislike"][0][0], 'guake')
+        self.assertEqual(out["dislike"][0][1], 'terminal')
+
+        fedoratagger.lib.add_vote(self.session, 'guake',
+                                  'terminal', True, user_yograterol)
+
+        out = fedoratagger.lib.statistics_by_user(self.session,
+                                                  user_yograterol)
+
+        self.assertEqual(out["total_like"], 1)
+        self.assertEqual(out["total_dislike"], 0)
+
+        self.assertEqual(out["like"][0][0], 'guake')
+        self.assertEqual(out["like"][0][1], 'terminal')
+
     def test_leaderboard(self):
         """ Test the leaderboard method. """
         out = fedoratagger.lib.leaderboard(self.session)
@@ -341,7 +377,7 @@ class TaggerLibtests(Modeltests):
         create_tag(self.session)
 
         out = fedoratagger.lib.leaderboard(self.session)
-        self.assertEqual(out.keys(), [1, 2, 3, 4, 5])
+        self.assertEqual(out.keys(), [1, 2, 3, 4, 5, 6])
         self.assertEqual(out[1].keys(), ['score', 'gravatar', 'name'])
         self.assertEqual(out[1]['name'], 'pingou')
         self.assertEqual(out[1]['score'], 8)

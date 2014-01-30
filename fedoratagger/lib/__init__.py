@@ -86,6 +86,35 @@ def add_tag(session, pkgname, tag, user):
     return 'Tag "%s" added to the package "%s"' % (tag, pkgname)
 
 
+def toggle_usage(session, pkgname, user):
+    """ Toggle the usage marker for a specified package. """
+    package = model.Package.by_name(session, pkgname)
+
+    try:
+        # Try to change an existing usage first.
+        usageobj = model.Usage.get(session, package_id=package.id,
+                                   user_id=user.id)
+        session.delete(usageobj)
+        message = 'You no longer use %s' % pkgname
+        usage = False
+    except NoResultFound:
+        # If no usage was found, we need to add a new one.
+        usageobj = model.Usage(package_id=package.id, user_id=user.id)
+        session.add(usageobj)
+        message = 'Marked that you use %s' % pkgname
+        session.add(usageobj)
+        usage = True
+
+    session.flush()
+    fedmsg.publish('usage.toggle', msg=dict(
+        user=user.__json__(session),
+        package=package.__json__(session),
+        usage=usage,
+    ))
+
+    return message
+
+
 def add_rating(session, pkgname, rating, user):
     """ Add the provided rating to the specified package. """
     package = model.Package.by_name(session, pkgname)
@@ -205,6 +234,35 @@ def statistics(session):
         },
     }
 
+
+def statistics_by_user(session, user, fields="all"):
+    """ Handles the /statistics/<user> path.
+
+    Returns a dictionnary of statistics of an user votes.
+    """
+    votes = model.Vote.get_votes_user(session, user.id)
+
+    votes_like = votes_dislike = dict()
+    total_like = total_dislike = total_votes = 0
+
+    if votes:
+        votes_like = \
+            [(v.tag.package.name, v.tag.label) for v in votes if v.like]
+        votes_dislike = \
+            [(v.tag.package.name, v.tag.label) for v in votes if not v.like]
+
+        total_like = len(votes_like)
+        total_dislike = len(votes_dislike)
+        total_votes = total_like + total_dislike
+
+    if fields == "all":
+        return dict(like=votes_like, total_like=total_like,
+                    dislike=votes_dislike, total_dislike=total_dislike,
+                    total=total_votes)
+    else:
+        return dict(total_like=total_like,
+                    total_dislike=total_dislike,
+                    total=total_votes)
 
 def leaderboard(session):
     """ Handles the /leaderboard/ path.

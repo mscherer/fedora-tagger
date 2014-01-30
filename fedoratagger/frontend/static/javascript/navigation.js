@@ -167,6 +167,59 @@ function statistics() {
     });
 }
 
+var statistics_like_dislike_template = "                        \
+<div id='statistics-user-table'>                                    \
+    <table class='statistics'>                                  \
+        <tr>\
+            <td>Total Likes</td>\
+            <td>{0}</td>\
+        </tr>      \
+        <tr>\
+            <td>Total Dislikes</td>\
+            <td>{1}</td>\
+        </tr>\
+    </table>                                                    \
+</div>";
+
+function statistics_user(username) {
+    request_in_progress = true;
+    $("body").append("<div id='statistics-user-dialog'></div>");
+    $("#statistics-user-dialog").attr('title', "Statistics Like/Dislike Packages");
+    $("#statistics-user-dialog").html("Calculating stats...  please wait.");
+    $("#statistics-user-dialog").dialog({
+        autoOpen: true,
+        modal: true,
+        close: function() { console.log("Hidden"); },
+    });
+
+    $.ajax({
+        type: "GET",
+        url: "api/v1/statistics-user/" + username + "/total",
+        cache: false,
+        data: $.param({
+            _csrf_token: $.getUrlVar("_csrf_token"),
+        }),
+        error: function() {
+            request_in_progress = false;
+            //$('#statistics-user-dialog').dialog('destroy');
+            if (! notifications_on) { return; }
+            if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
+            gritter_id = $.gritter.add({
+                title: 'There was a problem getting the statistics.',
+                text: 'Sorry.',
+                image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
+            });
+        },
+        success: function(json) {
+            $("#statistics-user-dialog").html(statistics_like_dislike_template.format(
+                json.total_like,
+                json.total_dislike
+            ));
+            request_in_progress = false;
+        }
+    });
+}
+
 function leaderboard() {
     request_in_progress = true;
     $.ajax({

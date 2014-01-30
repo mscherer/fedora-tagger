@@ -41,8 +41,16 @@ from fedoratagger.lib import model
 
 
 DB_URL = 'sqlite:///:memory:'
-#import requests
-#DB_URL = requests.get('http://api.postgression.com').text
+FAITOUT_URL = 'http://209.132.184.152/faitout/'
+try:
+    import requests
+    req = requests.get('%s/new' % FAITOUT_URL)
+    if req.status_code == 200:
+        DB_URL = req.text
+        print 'Using faitout at: %s' % DB_URL
+except:
+    pass
+
 
 class Modeltests(unittest.TestCase):
     """ Model tests. """
@@ -112,6 +120,10 @@ def create_user(session):
                                   )
     session.add(user)
 
+    user = model.FASUser(username='yograterol',
+                         email='yograterol@fp.o',)
+
+    session.add(user)
     session.commit()
 
 
@@ -172,6 +184,20 @@ def create_rating(session):
     fedoratagger.lib.add_rating(session, 'guake', 100, user_pingou)
     fedoratagger.lib.add_rating(session, 'guake', 50, user_toshio)
     fedoratagger.lib.add_rating(session, 'geany', 100, user_ralph)
+
+    session.commit()
+
+
+def toggle_usages(session):
+    """ Flip Usage stats on packages. """
+
+    user_pingou = model.FASUser.by_name(session, 'pingou')
+    user_toshio = model.FASUser.by_name(session, 'toshio')
+    user_ralph = model.FASUser.by_name(session, 'ralph')
+
+    fedoratagger.lib.toggle_usage(session, 'guake', user_pingou)
+    fedoratagger.lib.toggle_usage(session, 'guake', user_toshio)
+    fedoratagger.lib.toggle_usage(session, 'geany', user_ralph)
 
     session.commit()
 

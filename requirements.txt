@@ -2,6 +2,7 @@
 # Use this file by running "$ pip install -r requirements.txt"
 flask<0.10
 sqlalchemy
+alembic
 wtforms
 Flask-WTF<0.9
 Flask-Mako
@@ -30,3 +31,4 @@ python-openid-cla # required by flask_fas_openid
 python-openid-teams # required by flask_fas_openid
 requests
 urllib3
+PyYAML
