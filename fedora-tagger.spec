@@ -5,7 +5,7 @@
 %define eggname fedora_tagger
 
 Name:           fedora-tagger
-Version:        2.1.0
+Version:        2.1.1
 Release:        1%{?dist}
 Summary:        A web application for adding and ranking tags for Fedora packages
 
@@ -19,6 +19,7 @@ BuildRequires:  python-setuptools
 
 %if %{?rhel}%{!?rhel:0} >= 6
 BuildRequires:  python-sqlalchemy0.7
+BuildRequires:  python-ordereddict
 %else
 BuildRequires:  python-sqlalchemy
 %endif
@@ -55,6 +56,7 @@ BuildRequires:  python-nose
 
 %if %{?rhel}%{!?rhel:0} >= 6
 Requires:  python-sqlalchemy0.7
+Requires:  python-ordereddict
 %else
 Requires:  python-sqlalchemy
 %endif
@@ -140,6 +142,9 @@ cp -rf alembic/* %{buildroot}%{_datadir}/%{modname}/alembic
 %{python_sitelib}/%{eggname}-%{version}-py%{pyver}.egg-info/
 
 %changelog
+* Thu Jan 30 2014 Ralph Bean <rbean@redhat.com> - 2.1.1-1
+- Make the usage api more explicit for gnome-software.
+
 * Thu Jan 30 2014 Ralph Bean <rbean@redhat.com> - 2.1.0-1
 - Add more granular stats for users (@yograterol)
 - Add a Usage table to count how many users declare they are using a package.
