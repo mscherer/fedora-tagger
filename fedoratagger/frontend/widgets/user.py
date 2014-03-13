@@ -76,6 +76,18 @@ class UserWidget(tw2.core.Widget):
         return self.user.rank(ft.SESSION)
 
     @property
+    def points_to_go(self):
+        """ Here we actually calculate how many points behind the next person
+        we are.  return None if we are in first place.
+        """
+        if self.rank == 1:
+            return None
+
+        # TODO -- we have to actually figure out how to get the next person here
+        person_ahead = self.user
+        return person_ahead.score - self.user.score
+
+    @property
     def notifications_on(self):
         return getattr(self.user, 'notifications_on', False) \
                 and "checked='checked'" or ""

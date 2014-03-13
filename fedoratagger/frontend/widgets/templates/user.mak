@@ -14,6 +14,9 @@
            <a href="javascript:statistics_user('${w.username}');">(more)</a>
         </p>
         <p>Rank: <span id="rank">${str(w.rank)}</span></p>
+% if w.points_to_go != None:
+        <p>Next: <span id="to_go">${str(w.points_to_go)}</span></p>
+% endif
         <p><input type="checkbox" id="notifs_toggle"
           ${str(w.notifications_on)|n} />Notifications</p>
         <p><a href="javascript:logout();">Logout</a></p>
