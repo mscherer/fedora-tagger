@@ -190,7 +190,7 @@ class Package(DeclarativeBase):
             'name': self.name,
             'summary': self.summary,
             'tags': tags,
-            'rating': float(rating),
+            'rating': int(rating),
             'usage': self.usage,
             'icon': self.icon,
         }
@@ -483,7 +483,10 @@ class Rating(DeclarativeBase):
     def __json__(self, session):
 
         result = {
-            'rating': self.rating,
+            # We type this to an int to avoid precision problems in json that
+            # cascade into crypto problems between machines.
+            # See https://github.com/fedora-infra/fedmsg/pull/201 for reference
+            'rating': int(self.rating),
             'user': self.user.__json__(),
             'package': self.package.__json__(session),
         }
@@ -606,11 +609,11 @@ class FASUser(DeclarativeBase):
         :arg session: the session used to query the database.
         :kwarg limit: the max number of user to return.
         """
-        return  session.query(cls
-                             ).filter(FASUser.anonymous == False
-                             ).order_by(FASUser.score.desc()
-                             ).limit(limit
-                             ).all()
+        return session.query(cls
+                            ).filter(FASUser.anonymous == False
+                            ).order_by(FASUser.score.desc()
+                            ).limit(limit
+                            ).all()
 
     @classmethod
     def by_name(cls, session, username):
@@ -619,10 +622,10 @@ class FASUser(DeclarativeBase):
         :arg session: the session used to query the database.
         :arg username: the username of the desired user.
         """
-        return  session.query(cls
-                             ).filter(FASUser.username == username
-                             ).filter(FASUser.anonymous == False
-                             ).one()
+        return session.query(cls
+                            ).filter(FASUser.username == username
+                            ).filter(FASUser.anonymous == False
+                            ).one()
 
     def __json__(self, visited=None):
         obj = {
