@@ -81,6 +81,8 @@ def before_request(*args, **kw):
     for link in ["utilities.js", "cards.js", "navigation.js"]:
         tw2.core.JSLink(link="javascript/%s" % link).req().prepare()
 
+    flask.g.config = ft.APP.config
+
     flask.g.hotkeys_dialog = HotkeysDialog
     flask.g.search_dialog = SearchDialog
     flask.g.leaderboard_dialog = LeaderboardDialog
@@ -141,7 +143,7 @@ def card(name):
     else:
         package = m.Package.random(ft.SESSION)
 
-    w = CardWidget(package=package)
+    w = CardWidget(package=package, session=ft.SESSION)
     return w.display()
 
 
@@ -217,7 +219,10 @@ def home(name=None):
         except m.NoResultFound:
             packages[1] = m.Package()
 
-    cards = [CardWidget(package=packages[i]) for i in range(4)]
+    cards = [
+        CardWidget(package=packages[i], session=ft.SESSION)
+        for i in range(4)
+    ]
     cards[1].css_class = 'card center'
 
     return render_template('tagger.mak', cards=cards,
