@@ -1,3 +1,20 @@
+
+2.3.2
+-----
+
+Pull Requests
+
+- (@pypingou)       #192, Adjust the faitout url to the new address
+  https://github.com/fedora-infra/fedora-tagger/pull/192
+- (@ralphbean)      #195, Fix icon in json.
+  https://github.com/fedora-infra/fedora-tagger/pull/195
+
+Commits
+
+- 50e3981fc Adjust the faitout url to the new address
+  https://github.com/fedora-infra/fedora-tagger/commit/50e3981fc
+- 4341810e7 Fix icon in json.
+  https://github.com/fedora-infra/fedora-tagger/commit/4341810e7
 Changelog
 =========
 
