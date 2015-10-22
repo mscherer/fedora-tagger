@@ -195,7 +195,7 @@ class Package(DeclarativeBase):
             'tags': tags,
             'rating': int(rating),
             'usage': self.usage,
-            'icon': self.icon,
+            'icon': self.icon(session),
         }
 
         return result
