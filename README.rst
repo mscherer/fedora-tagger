@@ -42,7 +42,7 @@ Hacking on Fedora Tagger
 You can set up a development environment like this::
 
     # Create a virtualenv
-    $ sudo yum install -y python-virtualenvwrapper
+    $ sudo dnf install -y python-virtualenvwrapper
     $ mkvirtualenv tagger
 
     # Configure virtualenvwrapper for your shell
@@ -76,7 +76,7 @@ Visit http://localhost:5000/api/v1/ for some HTML docs.  You can use the
 awesome `HTTPie <https://github.com/jkbr/httpie>`_ to try it from the
 command line::
 
-    $ sudo yum -y install httpie
+    $ sudo dnf -y install httpie
 
 You can GET Tagger's data on a package::
 
