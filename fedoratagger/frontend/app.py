@@ -54,15 +54,13 @@ icon_template = "images/favicons/16_{serv}.png"
 item_template = "<li><img src='{icon}'/>" + \
     "<a href='{url}' target='_blank'>{text}</a></li>"
 services = [
-    ('beefy', 'Community', "/packages/{name}"),
-    ('pkgdb', 'PackageDB', "https://admin.fedoraproject.org/pkgdb/package/"
-        "{name}"),
-    ('koji', 'Builds', "http://koji.fedoraproject.org/koji/search" +
+    ('pkg', 'Packages', "https://apps.fedoraproject.org/packages/{name}"),
+    ('koji', 'Builds', "https://koji.fedoraproject.org/koji/search" +
         "?terms={name}&type=package&match=exact"),
-    ('bodhi', 'Updates', "https://admin.fedoraproject.org/updates/{name}"),
-    ('bugs', 'Bugs', "/packages/{name}/bugs"),
-    ('sources', 'Source', "http://pkgs.fedoraproject.org/gitweb/" +
-        "?p={name}.git"),
+    ('bodhi', 'Updates', "https://bodhi.fedoraproject.org/updates/" +
+        "?packages={name}"),
+    ('bugs', 'Bugs', "https://apps.fedoraproject.org/packages/{name}/bugs"),
+    ('sources', 'Source', "https://src.fedoraproject.org/rpms/{name}"),
 ]
 
 
