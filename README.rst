@@ -39,15 +39,16 @@ The following commands require authentication:
 Hacking on Fedora Tagger
 ------------------------
 
-You can set up a development environment like this::
+You can set up a development environment on Fedora 27+ like this::
 
     # Create a virtualenv
-    $ sudo dnf install -y python-virtualenvwrapper
+    $ sudo dnf install -y python2-virtualenvwrapper
     $ mkvirtualenv tagger
 
     # Configure virtualenvwrapper for your shell
-    $ echo '\nexport WORKON_HOME=$HOME/.virtualenvs\nsource /usr/bin/virtualenvwrapper.sh' >> ~/.bashrc
+    $ echo -e '\nexport WORKON_HOME=$HOME/.virtualenvs\nsource /usr/bin/virtualenvwrapper.sh' >> ~/.bashrc
     $ source ~/.bashrc
+    $ workon tagger
 
     # Install dependencies
     $ pip install kitchen paver
@@ -56,7 +57,7 @@ You can set up a development environment like this::
 
     # Run the tests
     $ pip install -r test-requirements.txt
-    $ ./runtests.sh
+    $ ./runtests.sh        # can take a long time
 
     # Install the egg link
     $ python setup.py develop
