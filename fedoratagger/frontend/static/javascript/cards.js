@@ -135,7 +135,7 @@ function card_new(name, callback) {
             gritter_id = $.gritter.add({
                 title: 'There was a problem getting the next card.',
                 text: 'Sorry.',
-                image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
+                image: '//fedoraproject.org/w/uploads/6/60/Hotdog.gif',
             });
         },
         success: function(html) {
@@ -174,7 +174,7 @@ function more_details(name) {
             gritter_id = $.gritter.add({
                 title: 'There was a problem getting the details.',
                 text: 'Sorry.',
-                image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
+                image: '//fedoraproject.org/w/uploads/6/60/Hotdog.gif',
             });
         },
         success: function(html) {

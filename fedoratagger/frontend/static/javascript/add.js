@@ -9,7 +9,7 @@ $(document).ready(function () {
         gritter_id = $.gritter.add({
             title: 'There was a problem adding that tag.',
             text: json.error,
-            image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
+            image: '//fedoraproject.org/w/uploads/6/60/Hotdog.gif',
         });
     };
     var success = function(json) {
@@ -29,7 +29,7 @@ $(document).ready(function () {
         gritter_id = $.gritter.add({
             title: 'OK',
             text: json.messages.join('\n<br/>\n'),
-            image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
+            image: '//fedoraproject.org/w/uploads/6/60/Hotdog.gif',
         });
     };
 

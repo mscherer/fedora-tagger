@@ -162,7 +162,7 @@ function statistics() {
             gritter_id = $.gritter.add({
                 title: 'There was a problem getting the statistics.',
                 text: 'Sorry.',
-                image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
+                image: '//fedoraproject.org/w/uploads/6/60/Hotdog.gif',
             });
         },
         success: function(json) {
@@ -222,7 +222,7 @@ function statistics_user(username) {
             gritter_id = $.gritter.add({
                 title: 'There was a problem getting the statistics.',
                 text: 'Sorry.',
-                image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
+                image: '//fedoraproject.org/w/uploads/6/60/Hotdog.gif',
             });
         },
         success: function(json) {
@@ -251,7 +251,7 @@ function leaderboard() {
             gritter_id = $.gritter.add({
                 title: 'There was a problem getting the leaderboard.',
                 text: 'Sorry.',
-                image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
+                image: '//fedoraproject.org/w/uploads/6/60/Hotdog.gif',
             });
         },
         success: function(html) {

@@ -64,7 +64,7 @@ function successful_usage_toggle(json) {
     gritter_id = $.gritter.add({
         title: 'OK',
         text: json.messages.join('.  '),
-        image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
+        image: '//fedoraproject.org/w/uploads/6/60/Hotdog.gif',
         sticky: true,
     });
 }
@@ -90,7 +90,7 @@ function successful_rating(json) {
     gritter_id = $.gritter.add({
         title: 'OK',
         text: json.messages.join('.  '),
-        image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
+        image: '//fedoraproject.org/w/uploads/6/60/Hotdog.gif',
         sticky: true,
     });
 }
@@ -102,7 +102,7 @@ function failed_action(xhr, status, err) {
     gritter_id = $.gritter.add({
         title: 'There was a problem with the server.',
         text: json.error + "\n<br/>\n" + json.error_detail.join('.  '),
-        image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
+        image: '//fedoraproject.org/w/uploads/6/60/Hotdog.gif',
         sticky: true,
     });
 }
@@ -139,7 +139,7 @@ function client_side_mod(pkgname, tag, like, json) {
     gritter_id = $.gritter.add({
         title: 'OK',
         text: json.messages.join('.  '),
-        image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
+        image: '//fedoraproject.org/w/uploads/6/60/Hotdog.gif',
         sticky: true,
     });
 }
